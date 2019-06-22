@@ -1,12 +1,15 @@
 package app.parsing;
 
 import app.CalculatorConfig;
+import app.CalculatorMain;
 
 public class StringArgumentParser {
 
     private String targetOperator = null;
     private int[] arguments = null;
-    private ArabicToRoman toRoman = new ArabicToRoman();
+    private RomanToArabic toRoman = new RomanToArabic();
+    public boolean hasRomeNumbers = false;
+    public boolean hasArabicNumbers = false;
 
     public void parse(String task) {
         String[] dirtyArgs = null;
@@ -26,8 +29,7 @@ public class StringArgumentParser {
             argumentsWithoutWhiteSpaces[i] = deleteWhiteSpace(dirtyArgs[i]);
         }
 
-        boolean hasRomeNumbers = false;
-        boolean hasArabicNumbers = false;
+
 
         for (String arg : argumentsWithoutWhiteSpaces) {
             if (CalculatorConfig.ROME_NUMBERS.contains(arg)) {
@@ -49,6 +51,7 @@ public class StringArgumentParser {
 
             if (!hasArabicNumbers && hasRomeNumbers){
                 intArgs[i] = toRoman.RometoArab(argumentsWithoutWhiteSpaces[i]);
+                CalculatorMain.romeResult = true;
             }
             if ((intArgs[i] < CalculatorConfig.MIN_ARG_VALUE) || (intArgs[i] > CalculatorConfig.MAX_ARG_VALUE))
                 throw new InvalidArgumentException("Калькулятор умеет работать с цифрами от 1 до 10 включительно.");
